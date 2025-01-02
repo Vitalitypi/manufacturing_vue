@@ -7,7 +7,7 @@
                         <User />
                     </el-icon>
                     <div class="card-content">
-                        <countup class="card-num color1" :end="6666" />
+                        <countup class="card-num color1" :end="2134" />
                         <div>用户访问量</div>
                     </div>
                 </el-card>
@@ -29,8 +29,8 @@
                         <Goods />
                     </el-icon>
                     <div class="card-content">
-                        <countup class="card-num color3" :end="8888" />
-                        <div>商品数量</div>
+                        <countup class="card-num color3" :end="51" />
+                        <div>累计高铁站点</div>
                     </div>
                 </el-card>
             </el-col>
@@ -40,8 +40,8 @@
                         <ShoppingCartFull />
                     </el-icon>
                     <div class="card-content">
-                        <countup class="card-num color4" :end="568" />
-                        <div>今日订单量</div>
+                        <countup class="card-num color4" :end="7" />
+                        <div>累计故障总类</div>
                     </div>
                 </el-card>
             </el-col>
@@ -51,8 +51,8 @@
             <el-col :span="18">
                 <el-card shadow="hover">
                     <div class="card-header">
-                        <p class="card-header-title">订单动态</p>
-                        <p class="card-header-desc">最近一周订单状态，包括订单成交量和订单退货量</p>
+                        <p class="card-header-title">客运动态</p>
+                        <p class="card-header-desc">最近一周客运动态，包括高铁站点客运入流量和出流量</p>
                     </div>
                     <v-chart class="chart" :option="dashOpt1" />
                 </el-card>
@@ -60,8 +60,8 @@
             <el-col :span="6">
                 <el-card shadow="hover">
                     <div class="card-header">
-                        <p class="card-header-title">品类分布</p>
-                        <p class="card-header-desc">最近一个月销售商品的品类情况</p>
+                        <p class="card-header-title">接触网跳闸故障种类分布</p>
+                        <p class="card-header-desc">最近三年接触网跳闸故障的种类情况</p>
                     </div>
                     <v-chart class="chart" :option="dashOpt2" />
                 </el-card>
@@ -71,8 +71,8 @@
             <el-col :span="7">
                 <el-card shadow="hover" :body-style="{ height: '400px' }">
                     <div class="card-header">
-                        <p class="card-header-title">时间线</p>
-                        <p class="card-header-desc">最新的销售动态和活动信息</p>
+                        <p class="card-header-title">系统分析流程</p>
+                        <p class="card-header-desc">高铁大数据智能分析流程</p>
                     </div>
                     <el-timeline>
                         <el-timeline-item v-for="(activity, index) in activities" :key="index" :color="activity.color">
@@ -90,8 +90,8 @@
             <el-col :span="10">
                 <el-card shadow="hover" :body-style="{ height: '400px' }">
                     <div class="card-header">
-                        <p class="card-header-title">渠道统计</p>
-                        <p class="card-header-desc">最近一个月的订单来源统计</p>
+                        <p class="card-header-title">高铁站点统计</p>
+                        <p class="card-header-desc">四川省内热门高铁站点客流量</p>
                     </div>
                     <v-chart class="map-chart" :option="mapOptions" />
                 </el-card>
@@ -100,7 +100,7 @@
                 <el-card shadow="hover" :body-style="{ height: '400px' }">
                     <div class="card-header">
                         <p class="card-header-title">排行榜</p>
-                        <p class="card-header-desc">销售商品的热门榜单Top5</p>
+                        <p class="card-header-desc">接触网跳闸故障Top5</p>
                     </div>
                     <div>
                         <div class="rank-item" v-for="(rank, index) in ranks">
@@ -108,7 +108,7 @@
                             <div class="rank-item-content">
                                 <div class="rank-item-top">
                                     <div class="rank-item-title">{{ rank.title }}</div>
-                                    <div class="rank-item-desc">销量：{{ rank.value }}</div>
+                                    <div class="rank-item-desc">数量：{{ rank.value }}</div>
                                 </div>
                                 <el-progress
                                     :show-text="false"
@@ -139,8 +139,131 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
-import { dashOpt1, dashOpt2, mapOptions } from './chart/options';
-import chinaMap from '@/utils/china';
+import { graphic } from 'echarts/core';
+import sichuanMap from '@/utils/sichuan';
+const dashOpt1 = {
+    tooltip: {
+        trigger: 'axis',
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    },
+    yAxis: {
+        type: 'value',
+    },
+    legend: {
+		data: ["真实值","预测值"]
+	},
+    grid: {
+        top: '2%',
+        left: '2%',
+        right: '3%',
+        bottom: '2%',
+        containLabel: true,
+    },
+    color: ['#009688', '#f44336'],
+    series: [
+        {
+            type: 'line',
+            name: '入流量',
+            smooth: true,
+            data: [120, 132, 301, 134, 90, 230, 210],
+        },
+        {
+            type: 'line',
+            name: '出流量',
+            smooth: true,
+            data: [220, 122, 191, 234, 190, 130, 310],
+        },
+    ],
+}
+const dashOpt2 = {
+    legend: {
+        bottom: '1%',
+        left: 'center',
+    },
+    color: ['#3f51b5', '#009688', '#f44336', '#00bcd4', '#1ABC9C'],
+    series: [
+        {
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 2,
+            },
+            data: [
+            { value: 2475, name: '过负荷' },
+				{ value: 1320, name: '外部因素' },
+				{ value: 289, name: '机车原因' },
+				{ value: 408, name: '天气原因' },
+				{ value: 101, name: '接触网线路' },
+				{ value: 18, name: '变电设备' },
+				{ value: 33, name: '其他原因' },
+            ],
+        },
+    ],
+}
+const mapOptions = {
+    tooltip: {
+        trigger: 'item',
+    },
+    geo: {
+        map: 'sichuan',
+        roam: false,
+        emphasis: {
+            label: {
+                show: false,
+            },
+        },
+    },
+    visualMap: {
+        show: false,
+        min: 0,
+        max: 5,
+        realtime: false,
+        calculable: false,
+        inRange: {
+            color: ['#d2e0f5', '#3df31d', '#71A9FF'],
+        },
+    },
+    series: [
+        {
+            geoIndex: 0,
+            name: '地域分布',
+            type: 'map',
+            coordinateSystem: 'geo',
+            map: 'sichuan',
+            data: [
+                { name: '成都市', value: 4 },
+                { name: '绵阳市', value: 4 },
+                { name: '德阳市', value: 7 },
+                { name: '广安市', value: 6 },
+                { name: '甘孜藏族自治州', value: 1 },
+                { name: '阿坝藏族羌族自治州', value: 1 },
+                { name: '凉山彝族自治州', value: 1 },
+                { name: '广元市', value: 1 },
+                { name: '巴中市', value: 1 },
+                { name: '南充市', value: 6 },
+                { name: '遂宁市', value: 1 },
+                { name: '达州市', value: 9 },
+                { name: '内江市', value: 1 },
+                { name: '资阳市', value: 1 },
+                { name: '自贡市', value: 1 },
+                { name: '宜宾市', value: 1 },
+                { name: '泸州市', value: 1 },
+                { name: '攀枝花市', value: 1 },
+                { name: '乐山市', value: 1 },
+                { name: '眉山市', value: 1 },
+                { name: '雅安市', value: 1 },
+            ],
+        },
+    ],
+};
+
 use([
     CanvasRenderer,
     BarChart,
@@ -153,69 +276,69 @@ use([
     VisualMapComponent,
     MapChart,
 ]);
-registerMap('china', chinaMap);
+registerMap('sichuan', sichuanMap);
 const activities = [
     {
-        content: '收藏商品',
-        description: 'xxx收藏了你的商品，就是不买',
-        timestamp: '30分钟前',
+        content: '智能分析',
+        description: '交通流量预测以及电气故障分类',
+        timestamp: '动态分析',
         color: '#00bcd4',
     },
     {
-        content: '用户评价',
-        description: 'xxx给了某某商品一个差评，吐血啊',
-        timestamp: '55分钟前',
+        content: '模型推断',
+        description: '使用部署好的模型对数据进行预测',
+        timestamp: '实时推断',
         color: '#1ABC9C',
     },
     {
-        content: '订单提交',
-        description: 'xxx提交了订单，快去收钱吧',
-        timestamp: '1小时前',
+        content: '模型部署',
+        description: '将训练好的模型稳定部署在服务器',
+        timestamp: '稳定服务',
         color: '#3f51b5',
     },
     {
-        content: '退款申请',
-        description: 'xxx申请了仅退款，又要亏钱了',
-        timestamp: '15小时前',
+        content: '模型训练',
+        description: '使用收集到的数据训练深度学习模型',
+        timestamp: '动态学习',
         color: '#f44336',
     },
     {
-        content: '商品上架',
-        description: '运营专员瞒着你上架了一辆飞机',
-        timestamp: '1天前',
+        content: '数据收集',
+        description: '针对客运和车辆两个场景进行收集',
+        timestamp: '实时收集',
         color: '#009688',
     },
 ];
 
 const ranks = [
     {
-        title: '手机',
-        value: 10000,
-        percent: 80,
+        title: '过负荷',
+        value: 2475,
+        percent: 53.2946,
         color: '#f25e43',
     },
     {
-        title: '电脑',
-        value: 8000,
-        percent: 70,
+        title: '外部因素',
+        value: 1320,
+        percent: 28.4238,
         color: '#00bcd4',
     },
     {
-        title: '相机',
-        value: 6000,
-        percent: 60,
+        title: '天气原因',
+        value: 408,
+        percent: 8.7855,
         color: '#64d572',
     },
     {
-        title: '衣服',
-        value: 5000,
-        percent: 55,
+        title: '机车原因',
+        value: 289,
+        percent: 6.2231,
         color: '#e9a745',
     },
     {
-        title: '书籍',
-        value: 4000,
-        percent: 50,
+        title: '接触网线路',
+        value: 101,
+        percent: 2.1748,
         color: '#009688',
     },
 ];
