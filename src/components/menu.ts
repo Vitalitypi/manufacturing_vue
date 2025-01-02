@@ -169,6 +169,18 @@ export const menuData: Menus[] = [
         permiss: '5',
     },
     {
+        id: '8',
+        icon: 'Guide',
+        index: '/predict',
+        title: '流量预测',
+    },
+    {
+        id: '9',
+        icon: 'Brush',
+        index: '/diagnosis',
+        title: '故障诊断',
+    },
+    {
         id: '7',
         icon: 'Brush',
         index: '/theme',

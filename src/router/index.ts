@@ -150,6 +150,22 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "theme" */ '../views/pages/theme.vue'),
             },
             {
+                path: '/predict',
+                name: 'predict',
+                meta: {
+                    title: '流量预测',
+                },
+                component: () => import(/* webpackChunkName: "predict" */ '../views/predict/predict.vue'),
+            },
+            {
+                path: '/diagnosis',
+                name: 'diagnosis',
+                meta: {
+                    title: '故障诊断',
+                },
+                component: () => import(/* webpackChunkName: "diagnosis" */ '../views/diagnosis/diagnosis.vue'),
+            },
+            {
                 path: '/calendar',
                 name: 'calendar',
                 meta: {
