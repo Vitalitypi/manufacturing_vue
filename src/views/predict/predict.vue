@@ -5,55 +5,120 @@
 				<div class="header">
 					<el-select class="el-select" v-model="region" placeholder="请选择">
 						<el-option v-for="option in array" :key="option.key" :label="option.label"
-							:value="option.value">
+							:value="option.key">
 						</el-option>
 					</el-select>
 					<div class="content-title">流量实时预测</div>
 				</div>
 
 			</template>
-			<schart class="schart" canvasId="line" :options="options"></schart>
+			<v-chart class="schart" :option="options" />
 		</el-card>
 	</div>
 </template>
 
-<script setup lang="ts" name="schart">
-import Schart from 'vue-schart';
-import { ref,watch } from 'vue';
-const region = ref('各点平均'); // 用于v-model绑定的选中值
-const array = ref([ // 选项数组，每个元素是一个对象
-	{ value: '小明', label: '小明', key: '1' },
-	{ value: '小红', label: '小红', key: '2' },
-	{ value: '小白', label: '小白', key: '3' }
-]);
+<script setup lang="ts" name="echarts">
+import { use } from 'echarts/core';
+import VChart from 'vue-echarts';
+import { LineChart } from 'echarts/charts';
+import { ref, watch } from 'vue';
+import axios from 'axios';
+const num = 170;
+let items = []
+for(let i = 0;i<num;i++){
+	items.push({
+		label:'传感器点'+(i),
+		value:'传感器点'+(i),
+		key:i
+	})
+}
+const array = ref(items);
+const region = ref(items[0].key); // 用于v-model绑定的选中值
+let idx = 0;
+let cache_true = []
+let cache_pred = []
 const options = ref({
-	type: 'line',
-	title: {
-		text: region.value+'未来流量实时预测折线图'
+    tooltip: {
+        trigger: 'axis',
+    },
+	legend: {
+		data: ["真实值","预测值"]
 	},
-	colorList: ["#3f51b5", "#009688", "#f44336", "#00bcd4", "#1ABC9C"],
-	labels: ['6月', '7月', '8月', '9月', '10月'],
-	datasets: [
-		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true,
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [],
+    },
+    yAxis: {
+        type: 'value',
+    },
+    color: ['#009688', '#f44336'],
+    series: [
+        {
+            name: '真实值',
+            type: 'line',
+            data: [],
+        },
+        {
+            name: '预测值',
+            type: 'line',
+            data: [],
+        },
+    ],
+});
+use([
+    LineChart,
+]);
+const fetchData = async () => {
+	try {
+		const response = await axios.get('http://127.0.0.1:5000/predict?idx=' + idx);
+		let t = response.data.true
+		for(let i = 0;i<num;i++){
+			for (let j = 0; j < 12; j++) {
+				t[i][j] = Math.round(t[i][j])
+				if(cache_true.length!=0){
+					cache_pred[i].push(response.data.pred[i][j])
+					cache_true[i].push(t[i][j])
+				}
+			}
 		}
-	]
-});
+		if(cache_true.length==0){
+			cache_pred = response.data.pred
+			cache_true = t
+		}
+		options.value.series[0].data = cache_true[region.value]
+		options.value.series[1].data = cache_pred[region.value]
+		for(let i = 0;i<12;i++){
+			options.value.xAxis.data.push(idx+i)
+		}
+		idx += 12
+	} catch (error) {
+		console.error('请求失败:', error);
+	}
+};
 // 监听selectedRegion的变化，并更新图表标题
-watch(region, (newValue) => {
-  if (newValue) {
-    options.value.title.text = `${newValue}未来流量实时预测折线图`;
-  }
+watch(region, (key) => {
+	if (key) {
+		options.value.series[0].data = cache_true[key]
+		options.value.series[1].data = cache_pred[key]
+		// options.value.title.text = `${items[key].value}未来流量实时预测折线图`;
+	}
 });
-//不断请求新的数据
+fetchData()
+setInterval(fetchData, 3000);
 
 </script>
 
 <style scoped>
 .schart {
 	width: 100%;
-	height: 400px;
+	height: 700px;
 }
 
 .header {
