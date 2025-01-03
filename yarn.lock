@@ -89,6 +89,11 @@
     "estree-walker" "^2.0.2"
     "picomatch" "^2.3.1"
 
+"@socket.io/component-emitter@~3.1.0":
+  "integrity" "sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA=="
+  "resolved" "https://registry.npmmirror.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz"
+  "version" "3.1.2"
+
 "@transloadit/prettier-bytes@0.0.7":
   "integrity" "sha512-VeJbUb0wEKbcwaSlj5n+LscBl9IPgLPkHVGBkh00cztv6X4L/TJXK58LzFuBKX7/GAfiGhIwH67YTLTlzvIzBA=="
   "resolved" "https://registry.npmmirror.com/@transloadit/prettier-bytes/-/prettier-bytes-0.0.7.tgz"
@@ -516,7 +521,7 @@
   "resolved" "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.10.tgz"
   "version" "1.11.10"
 
-"debug@^4.3.4":
+"debug@^4.3.4", "debug@~4.3.1", "debug@~4.3.2":
   "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
   "resolved" "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz"
   "version" "4.3.4"
@@ -568,6 +573,22 @@
     "lodash-unified" "^1.0.2"
     "memoize-one" "^6.0.0"
     "normalize-wheel-es" "^1.2.0"
+
+"engine.io-client@~6.6.1":
+  "integrity" "sha512-TAr+NKeoVTjEVW8P3iHguO1LO6RlUz9O5Y8o7EY0fU+gY1NYqas7NN3slpFtbXEsLMHk0h90fJMfKjRkQ0qUIw=="
+  "resolved" "https://registry.npmmirror.com/engine.io-client/-/engine.io-client-6.6.2.tgz"
+  "version" "6.6.2"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    "debug" "~4.3.1"
+    "engine.io-parser" "~5.2.1"
+    "ws" "~8.17.1"
+    "xmlhttprequest-ssl" "~2.1.1"
+
+"engine.io-parser@~5.2.1":
+  "integrity" "sha512-HqD3yTBfnBxIrbnM1DoD6Pcq8NECnh8d4As1Qgh0z5Gg3jRRIqijury0CL3ghu/edArpUYiYqQiDUQBIs4np3Q=="
+  "resolved" "https://registry.npmmirror.com/engine.io-parser/-/engine.io-parser-5.2.3.tgz"
+  "version" "5.2.3"
 
 "entities@^4.5.0":
   "integrity" "sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw=="
@@ -1131,6 +1152,24 @@
   "resolved" "https://registry.npmmirror.com/snabbdom/-/snabbdom-3.6.2.tgz"
   "version" "3.6.2"
 
+"socket.io-client@^4.8.1":
+  "integrity" "sha512-hJVXfu3E28NmzGk8o1sHhN3om52tRvwYeidbj7xKy2eIIse5IoKX3USlS6Tqt3BHAtflLIkCQBkzVrEEfWUyYQ=="
+  "resolved" "https://registry.npmmirror.com/socket.io-client/-/socket.io-client-4.8.1.tgz"
+  "version" "4.8.1"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    "debug" "~4.3.2"
+    "engine.io-client" "~6.6.1"
+    "socket.io-parser" "~4.2.4"
+
+"socket.io-parser@~4.2.4":
+  "integrity" "sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew=="
+  "resolved" "https://registry.npmmirror.com/socket.io-parser/-/socket.io-parser-4.2.4.tgz"
+  "version" "4.2.4"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    "debug" "~4.3.1"
+
 "source-map-js@^1.0.2", "source-map-js@^1.2.0":
   "integrity" "sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg=="
   "resolved" "https://registry.npmmirror.com/source-map-js/-/source-map-js-1.2.0.tgz"
@@ -1357,6 +1396,11 @@
   "resolved" "https://registry.npmmirror.com/word/-/word-0.3.0.tgz"
   "version" "0.3.0"
 
+"ws@~8.17.1":
+  "integrity" "sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ=="
+  "resolved" "https://registry.npmmirror.com/ws/-/ws-8.17.1.tgz"
+  "version" "8.17.1"
+
 "xlsx@^0.18.5":
   "integrity" "sha512-dmg3LCjBPHZnQp5/F/+nnTa+miPJxUXB6vtk42YjBBKayDNagxGEeIdWApkYPOf3Z3pm3k62Knjzp7lMeTEtFQ=="
   "resolved" "https://registry.npmmirror.com/xlsx/-/xlsx-0.18.5.tgz"
@@ -1369,6 +1413,11 @@
     "ssf" "~0.11.2"
     "wmf" "~1.0.1"
     "word" "~0.3.0"
+
+"xmlhttprequest-ssl@~2.1.1":
+  "integrity" "sha512-TEU+nJVUUnA4CYJFLvK5X9AOeH4KvDvhIfm0vV1GaQRtchnG0hgK5p8hw/xjv8cunWYCsiPCSDzObPyhEwq3KQ=="
+  "resolved" "https://registry.npmmirror.com/xmlhttprequest-ssl/-/xmlhttprequest-ssl-2.1.2.tgz"
+  "version" "2.1.2"
 
 "zrender@5.5.0":
   "integrity" "sha512-O3MilSi/9mwoovx77m6ROZM7sXShR/O/JIanvzTwjN3FORfLSr81PsUGd7jlaYOeds9d8tw82oP44+3YucVo+w=="

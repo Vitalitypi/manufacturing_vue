@@ -4,8 +4,7 @@
 			<template #header>
 				<div class="header">
 					<el-select class="el-select" v-model="region" placeholder="请选择">
-						<el-option v-for="option in array" :key="option.key" :label="option.label"
-							:value="option.key">
+						<el-option v-for="option in array" :key="option.key" :label="option.label" :value="option.key">
 						</el-option>
 					</el-select>
 					<div class="content-title">流量实时预测</div>
@@ -21,15 +20,16 @@
 import { use } from 'echarts/core';
 import VChart from 'vue-echarts';
 import { LineChart } from 'echarts/charts';
-import { ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import axios from 'axios';
+import io from 'socket.io-client';
 const num = 170;
 let items = []
-for(let i = 0;i<num;i++){
+for (let i = 0; i < num; i++) {
 	items.push({
-		label:'传感器点'+(i),
-		value:'传感器点'+(i),
-		key:i
+		label: '传感器点' + (i),
+		value: '传感器点' + (i),
+		key: i
 	})
 }
 const array = ref(items);
@@ -38,70 +38,43 @@ let idx = 0;
 let cache_true = []
 let cache_pred = []
 const options = ref({
-    tooltip: {
-        trigger: 'axis',
-    },
-	legend: {
-		data: ["真实值","预测值"]
+	tooltip: {
+		trigger: 'axis',
 	},
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true,
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: [],
-    },
-    yAxis: {
-        type: 'value',
-    },
-    color: ['#009688', '#f44336'],
-    series: [
-        {
-            name: '真实值',
-            type: 'line',
-            data: [],
-        },
-        {
-            name: '预测值',
-            type: 'line',
-            data: [],
-        },
-    ],
+	legend: {
+		data: ["真实值", "预测值"]
+	},
+	grid: {
+		left: '3%',
+		right: '4%',
+		bottom: '3%',
+		containLabel: true,
+	},
+	xAxis: {
+		type: 'category',
+		boundaryGap: false,
+		data: [],
+	},
+	yAxis: {
+		type: 'value',
+	},
+	color: ['#009688', '#f44336'],
+	series: [
+		{
+			name: '真实值',
+			type: 'line',
+			data: [],
+		},
+		{
+			name: '预测值',
+			type: 'line',
+			data: [],
+		},
+	],
 });
 use([
-    LineChart,
+	LineChart,
 ]);
-const fetchData = async () => {
-	try {
-		const response = await axios.get('http://127.0.0.1:5000/predict?idx=' + idx);
-		let t = response.data.true
-		for(let i = 0;i<num;i++){
-			for (let j = 0; j < 12; j++) {
-				t[i][j] = Math.round(t[i][j])
-				if(cache_true.length!=0){
-					cache_pred[i].push(response.data.pred[i][j])
-					cache_true[i].push(t[i][j])
-				}
-			}
-		}
-		if(cache_true.length==0){
-			cache_pred = response.data.pred
-			cache_true = t
-		}
-		options.value.series[0].data = cache_true[region.value]
-		options.value.series[1].data = cache_pred[region.value]
-		for(let i = 0;i<12;i++){
-			options.value.xAxis.data.push(idx+i)
-		}
-		idx += 12
-	} catch (error) {
-		console.error('请求失败:', error);
-	}
-};
 // 监听selectedRegion的变化，并更新图表标题
 watch(region, (key) => {
 	if (key) {
@@ -110,8 +83,42 @@ watch(region, (key) => {
 		// options.value.title.text = `${items[key].value}未来流量实时预测折线图`;
 	}
 });
-fetchData()
-setInterval(fetchData, 3000);
+const socket = ref(null);
+onMounted(()=>{
+	socket.value = io('http://127.0.0.1:5000');
+	socket.value.emit('railway_server', "predict");
+	socket.value.on('predict', (response) => {
+		let t = response.true
+		for (let i = 0; i < num; i++) {
+			for (let j = 0; j < 12; j++) {
+				t[i][j] = Math.round(t[i][j])
+				if (cache_true.length != 0) {
+					cache_pred[i].push(response.pred[i][j])
+					cache_true[i].push(t[i][j])
+				}
+			}
+		}
+		if (cache_true.length == 0) {
+			cache_pred = response.pred
+			cache_true = t
+		}
+		options.value.series[0].data = cache_true[region.value]
+		options.value.series[1].data = cache_pred[region.value]
+		for (let i = 0; i < 12; i++) {
+			options.value.xAxis.data.push(idx + i)
+		}
+		idx += 12
+		// console.log('Connected to the server.',response);
+	});
+	
+})
+onUnmounted(() => {
+	console.log("onUnmounted")
+  if (socket.value) {
+    socket.value.disconnect();
+    console.log('WebSocket disconnected on unmount');
+  }
+});
 
 </script>
 
