@@ -7,7 +7,7 @@
 						<el-option v-for="option in array" :key="option.key" :label="option.label" :value="option.key">
 						</el-option>
 					</el-select>
-					<div class="content-title">流量实时预测</div>
+					<div class="content-title">客运流量实时预测</div>
 				</div>
 
 			</template>
@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts" name="echarts">
+import { ElLoading } from 'element-plus'
 import { use } from 'echarts/core';
 import VChart from 'vue-echarts';
 import { LineChart } from 'echarts/charts';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import axios from 'axios';
 import io from 'socket.io-client';
 const num = 170;
 let items = []
@@ -85,9 +85,16 @@ watch(region, (key) => {
 });
 const socket = ref(null);
 onMounted(()=>{
+	let loadingInstrance = ElLoading.service({
+      lock: true,
+      text: "正在加载...",
+      background: "rgba(0, 0, 0, 0.5)",
+    });
 	socket.value = io('http://127.0.0.1:5000');
 	socket.value.emit('railway_server', "predict");
 	socket.value.on('predict', (response) => {
+		console.log("received!")
+		loadingInstrance.close();
 		let t = response.true
 		for (let i = 0; i < num; i++) {
 			for (let j = 0; j < 12; j++) {
@@ -105,7 +112,7 @@ onMounted(()=>{
 		options.value.series[0].data = cache_true[region.value]
 		options.value.series[1].data = cache_pred[region.value]
 		for (let i = 0; i < 12; i++) {
-			options.value.xAxis.data.push(idx + i)
+			options.value.xAxis.data.push(response.index + i)
 		}
 		idx += 12
 		// console.log('Connected to the server.',response);

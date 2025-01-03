@@ -16,8 +16,8 @@
 import { use } from 'echarts/core';
 import VChart from 'vue-echarts';
 import { PieChart } from 'echarts/charts';
-import { ref } from 'vue';
-import axios from 'axios';
+import { onMounted, onUnmounted, ref } from 'vue';
+import io from 'socket.io-client';
 const pieOptions = ref({
 	title: {
 		text: '接触网跳闸故障实时诊断',
@@ -81,18 +81,20 @@ let idx = 0;
 use([
 	PieChart,
 ]);
-const fetchData = async () => {
-	try {
+const socket = ref(null);
+onMounted(()=>{
+	socket.value = io('http://127.0.0.1:5000');
+	socket.value.emit('railway_server', "diagnosis");
+	socket.value.on('diagnosis', (response) => {
 		let nums1 = [],nums2 = [];
 		for (let i = 0; i < 7; i++) {
 			nums1.push(0)
 			nums2.push(0)
 		}
-		const response = await axios.get('http://127.0.0.1:5000/diagnosis?idx=' + idx);
-		for (let i = 0; i < response.data.pred.length; i++) {
-			const tp1 = response.data.pred[i];
+		for (let i = 0; i < response.pred.length; i++) {
+			const tp1 = response.pred[i];
 			nums1[tp1]++
-			const tp2 = response.data.true[i];
+			const tp2 = response.true[i];
 			nums2[tp2]++
 		}
 		for(let i = 0;i<7;i++){
@@ -100,12 +102,15 @@ const fetchData = async () => {
 			pieOptions.value.series[1].data[i].value = nums2[i]
 		}
 		idx += 500
-	} catch (error) {
-		console.error('请求失败:', error);
-	}
-};
-fetchData()
-setInterval(fetchData, 3000);
+	});
+})
+onUnmounted(() => {
+	console.log("onUnmounted")
+  if (socket.value) {
+    socket.value.disconnect();
+    console.log('WebSocket disconnected on unmount');
+  }
+});
 </script>
 
 <style scoped>
