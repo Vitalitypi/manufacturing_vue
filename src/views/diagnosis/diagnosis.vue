@@ -3,7 +3,7 @@
 		<el-card class="mgb20" shadow="hover">
 			<template #header>
 				<div class="header">
-					<div class="content-title">故障实时诊断</div>
+					<div class="content-title">健康度实时评估</div>
 				</div>
 
 			</template>
@@ -20,7 +20,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import io from 'socket.io-client';
 const pieOptions = ref({
 	title: {
-		text: '接触网跳闸故障实时诊断',
+		text: '价值网健康度实时评估展示',
 		left: 'center',
 	},
 	tooltip: {
@@ -37,13 +37,13 @@ const pieOptions = ref({
 			radius: '50%',
 			center: ['25%', '50%'],
 			data: [
-				{ value: 2475, name: '过负荷' },
-				{ value: 1320, name: '外部因素' },
-				{ value: 289, name: '机车原因' },
-				{ value: 408, name: '天气原因' },
-				{ value: 101, name: '接触网线路' },
-				{ value: 18, name: '变电设备' },
-				{ value: 33, name: '其他原因' },
+				{ value: 2475,name: '风险0' },
+				{ value: 1320,name: '风险1' },
+				{ value: 289, name: '风险2' },
+				{ value: 408, name: '风险3' },
+				{ value: 101, name: '风险4' },
+				{ value: 18,  name: '风险5' },
+				{ value: 33,  name: '风险6' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -59,13 +59,13 @@ const pieOptions = ref({
 			radius: '50%',
 			center: ['75%', '50%'],
 			data: [
-				{ value: 2475, name: '过负荷' },
-				{ value: 1320, name: '外部因素' },
-				{ value: 289, name: '机车原因' },
-				{ value: 408, name: '天气原因' },
-				{ value: 101, name: '接触网线路' },
-				{ value: 18, name: '变电设备' },
-				{ value: 33, name: '其他原因' },
+				{ value: 2475,name: '风险0' },//过负荷  
+				{ value: 1320,name: '风险1' },//外部因素
+				{ value: 289, name: '风险2' },//机车原因
+				{ value: 408, name: '风险3' },//天气原因
+				{ value: 101, name: '风险4' },//接触网线
+				{ value: 18,  name: '风险5' },//变电设备
+				{ value: 33,  name: '风险6' },//其他原因
 			],
 			emphasis: {
 				itemStyle: {
@@ -83,7 +83,7 @@ use([
 ]);
 const socket = ref(null);
 onMounted(()=>{
-	socket.value = io('http://127.0.0.1:5000');
+	socket.value = io('http://127.0.0.1:5001');
 	socket.value.emit('railway_server', "diagnosis");
 	socket.value.on('diagnosis', (response) => {
 		let nums1 = [],nums2 = [];

@@ -7,7 +7,7 @@
 						<el-option v-for="option in array" :key="option.key" :label="option.label" :value="option.key">
 						</el-option>
 					</el-select>
-					<div class="content-title">客运流量实时预测</div>
+					<div class="content-title">攀钢集团钢铁销量实时预测</div>
 				</div>
 
 			</template>
@@ -90,7 +90,7 @@ onMounted(()=>{
       text: "正在加载...",
       background: "rgba(0, 0, 0, 0.5)",
     });
-	socket.value = io('http://127.0.0.1:5000');
+	socket.value = io('http://127.0.0.1:5001');
 	socket.value.emit('railway_server', "predict");
 	socket.value.on('predict', (response) => {
 		console.log("received!")

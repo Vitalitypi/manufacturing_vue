@@ -172,13 +172,13 @@ export const menuData: Menus[] = [
         id: '9',
         icon: 'Brush',
         index: '/diagnosis',
-        title: '故障诊断',
+        title: '价值网健康度评估',
     },
     {
         id: '8',
         icon: 'Guide',
         index: '/predict',
-        title: '流量预测',
+        title: '全流程动态感知',
     },
     {
         id: '7',

@@ -30,7 +30,7 @@
                     </el-icon>
                     <div class="card-content">
                         <countup class="card-num color3" :end="51" />
-                        <div>累计高铁站点</div>
+                        <div>累计检测站点</div>
                     </div>
                 </el-card>
             </el-col>
@@ -41,7 +41,7 @@
                     </el-icon>
                     <div class="card-content">
                         <countup class="card-num color4" :end="7" />
-                        <div>累计故障总类</div>
+                        <div>累计风险总类</div>
                     </div>
                 </el-card>
             </el-col>
@@ -51,8 +51,8 @@
             <el-col :span="18">
                 <el-card shadow="hover">
                     <div class="card-header">
-                        <p class="card-header-title">客运动态</p>
-                        <p class="card-header-desc">最近一周客运动态，包括高铁站点客运入流量和出流量</p>
+                        <p class="card-header-title">攀钢销售动态</p>
+                        <p class="card-header-desc">最近一周销售动态，包括供应判断、销量预测等业务</p>
                     </div>
                     <v-chart class="chart" :option="dashOpt1" />
                 </el-card>
@@ -60,8 +60,8 @@
             <el-col :span="6">
                 <el-card shadow="hover">
                     <div class="card-header">
-                        <p class="card-header-title">接触网跳闸故障种类分布</p>
-                        <p class="card-header-desc">最近三年接触网跳闸故障的种类情况</p>
+                        <p class="card-header-title">价值网健康度风险种类分布</p>
+                        <p class="card-header-desc">最近三年价值网健康度的风险种类情况</p>
                     </div>
                     <v-chart class="chart" :option="dashOpt2" />
                 </el-card>
@@ -72,7 +72,7 @@
                 <el-card shadow="hover" :body-style="{ height: '400px' }">
                     <div class="card-header">
                         <p class="card-header-title">系统分析流程</p>
-                        <p class="card-header-desc">高铁大数据智能分析流程</p>
+                        <p class="card-header-desc">制造服务融合智能分析流程</p>
                     </div>
                     <el-timeline>
                         <el-timeline-item v-for="(activity, index) in activities" :key="index" :color="activity.color">
@@ -90,8 +90,8 @@
             <el-col :span="10">
                 <el-card shadow="hover" :body-style="{ height: '400px' }">
                     <div class="card-header">
-                        <p class="card-header-title">高铁站点统计</p>
-                        <p class="card-header-desc">四川省内热门高铁站点客流量</p>
+                        <p class="card-header-title">检测站点统计</p>
+                        <p class="card-header-desc">四川省内检测站点分布</p>
                     </div>
                     <v-chart class="map-chart" :option="mapOptions" />
                 </el-card>
@@ -100,7 +100,7 @@
                 <el-card shadow="hover" :body-style="{ height: '400px' }">
                     <div class="card-header">
                         <p class="card-header-title">排行榜</p>
-                        <p class="card-header-desc">接触网跳闸故障Top5</p>
+                        <p class="card-header-desc">价值网健康度风险种类Top5</p>
                     </div>
                     <div>
                         <div class="rank-item" v-for="(rank, index) in ranks">
@@ -196,13 +196,13 @@ const dashOpt2 = {
                 borderWidth: 2,
             },
             data: [
-            { value: 2475, name: '过负荷' },
-				{ value: 1320, name: '外部因素' },
-				{ value: 289, name: '机车原因' },
-				{ value: 408, name: '天气原因' },
-				{ value: 101, name: '接触网线路' },
-				{ value: 18, name: '变电设备' },
-				{ value: 33, name: '其他原因' },
+                { value: 2475, name: '风险0' },
+				{ value: 1320, name: '风险1' },
+				{ value: 289,  name: '风险2' },
+				{ value: 408,  name: '风险3' },
+				{ value: 101,  name: '风险4' },
+				{ value: 18,   name: '风险5' },
+				{ value: 33,   name: '风险6' },
             ],
         },
     ],
@@ -280,13 +280,13 @@ registerMap('sichuan', sichuanMap);
 const activities = [
     {
         content: '智能分析',
-        description: '交通流量预测以及电气故障分类',
+        description: '全流程动态感知以及价值网健康度评估',
         timestamp: '动态分析',
         color: '#00bcd4',
     },
     {
         content: '模型推断',
-        description: '使用部署好的模型对数据进行预测',
+        description: '使用部署好的模型对数据进行推理',
         timestamp: '实时推断',
         color: '#1ABC9C',
     },
@@ -304,7 +304,7 @@ const activities = [
     },
     {
         content: '数据收集',
-        description: '针对客运和车辆两个场景进行收集',
+        description: '针对销售全流程动态感知和价值网健康度评估两个场景进行收集',
         timestamp: '实时收集',
         color: '#009688',
     },
@@ -312,31 +312,31 @@ const activities = [
 
 const ranks = [
     {
-        title: '过负荷',
+        title: '风险0',
         value: 2475,
         percent: 53.2946,
         color: '#f25e43',
     },
     {
-        title: '外部因素',
+        title: '风险1',
         value: 1320,
         percent: 28.4238,
         color: '#00bcd4',
     },
     {
-        title: '天气原因',
+        title: '风险3',
         value: 408,
         percent: 8.7855,
         color: '#64d572',
     },
     {
-        title: '机车原因',
+        title: '风险2',
         value: 289,
         percent: 6.2231,
         color: '#e9a745',
     },
     {
-        title: '接触网线路',
+        title: '风险4',
         value: 101,
         percent: 2.1748,
         color: '#009688',

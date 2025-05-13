@@ -153,7 +153,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/predict',
                 name: 'predict',
                 meta: {
-                    title: '流量预测',
+                    title: '全流程动态感知',
                 },
                 component: () => import(/* webpackChunkName: "predict" */ '../views/predict/predict.vue'),
             },
@@ -161,7 +161,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/diagnosis',
                 name: 'diagnosis',
                 meta: {
-                    title: '故障诊断',
+                    title: '价值网健康度评估',
                 },
                 component: () => import(/* webpackChunkName: "diagnosis" */ '../views/diagnosis/diagnosis.vue'),
             },
